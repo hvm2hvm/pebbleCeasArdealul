@@ -1,0 +1,26 @@
+{
+    "author": "hvm2hvm@gmail.com",
+    "dependencies": {},
+    "keywords": [],
+    "name": "ardealul",
+    "pebble": {
+        "displayName": "Ceas Ardealul",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk"
+        ],
+        "uuid": "5c281a79-5ba0-4270-a424-8ae176d44f64",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.2.0"
+}
