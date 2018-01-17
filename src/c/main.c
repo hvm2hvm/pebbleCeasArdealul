@@ -42,7 +42,7 @@ static char *link_text[] = {
 };
 
 static char *minute_text[] = {
-  "fix",
+  "",
   "cinci",
   "zece",
   "sfert",
@@ -75,6 +75,9 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   
   int hour = tick_time->tm_hour % 12;
   int seconds = tick_time->tm_min * 60 + tick_time->tm_sec;
+  int seconds2 = seconds, diff2 = seconds2 % 60;
+  
+  // calculations of 5 minutes precision
   int diff = seconds % 300;
   if (diff < 150) { 
     seconds -= diff;
@@ -87,11 +90,31 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   if (seconds == 3600) {
     seconds = 0;
   }
+  
+  // calculations of 1 minute precision (now only for deciding whether to display "fix")
+  if (diff2 < 30) { 
+    seconds2 -= diff2;
+  } else {
+    seconds2 += 60 - diff2;
+  }
+  if (seconds2 == 3600) {
+    seconds2 = 0;
+  }
+  
   int minute = seconds / 300;
   
+  // check to see if the clock is H o'clock sharp
+  if (seconds2 / 60 == 0) {
+    // in that case we add "fix" 
+    strncpy(minute_display, "fix", 20);
+    strncpy(link_display, "", 10);
+  } else {
+    // otherwise we use the normal text which changes every 5 minutes
+    strncpy(minute_display, minute_text[minute], 20);
+    strncpy(link_display, link_text[minute], 10);
+  }
+  
   strncpy(hour_display, hour_text[hour], 10);
-  strncpy(link_display, link_text[minute], 10);
-  strncpy(minute_display, minute_text[minute], 20);
   strncpy(date_text_display, date_text[tick_time->tm_wday], 20);
   snprintf(date_display, 20, "%02d-%02d-%d", 
            tick_time->tm_mday, tick_time->tm_mon+1, tick_time->tm_year+1900);
